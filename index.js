@@ -28,54 +28,63 @@ document.addEventListener("click", (e) => {
         handleAddItem(e.target.dataset.add)
     } else if (e.target.dataset.remove){
         handleRemoveItem(e.target.dataset.remove)
+    } else if (e.target.dataset.checkout){
+        handleCheckOut(e.target.dataset.checkout)
     }
 })
 
 let orderArray = []
 
-function handleAddItem(menuID){
+function handleAddItem(menuID) {
+    const targetMenuItem = menuArray.find(item => item.id === Number(menuID));
+    if (targetMenuItem) {
+        orderArray.push(targetMenuItem);
+        updateOrderDisplay(); // Call this to refresh the order display
 
-    const targetMenuItem = menuArray.filter((items) => {
-        return items.id === Number(menuID)
-    })[0]
-    orderArray.push(targetMenuItem)
-
-    document.getElementById("buy-item").innerHTML += `
-        <div class="order-container">
-            <div class="order-content>
-                <div class="order-name">
-                    <p>${targetMenuItem.name}</p>
-                    <p class="remove" data-remove="${menu.id}">Remove</p>
-                </div>
-                <div class="order-price">
-                    <p>$${targetMenuItem.price}</p>
-                </div>
-            </div>
-        </div>`
-
-
-    const orderTotal = orderArray.reduce((total, current) => total + current.price, 0)
-    document.getElementById("total").innerHTML = `
-        <div>
-            <p>Total: $${orderTotal.toFixed(2)}</p>
-        </div>`
-    
-    
-    render()
+        const orderTotal = orderArray.reduce((total, current) => total + current.price, 0);
+        document.getElementById("total").innerHTML = `<div><p>Total: $${orderTotal.toFixed(2)}</p></div>`;
+    }
 }
 
 function handleRemoveItem(menuID) {
-    const targetMenuItem = menuArray.filter((items) => {
-        return items.id === Number(menuID)
-    })[0]
+    // Convert menuID to Number
+    menuID = Number(menuID);
 
-    let orderIndex = orderArray.findIndex(targetMenuItem)
-    if(orderIndex !== -1){
-        orderArray.splice(orderIndex, 1)
+    // Find the index of the item in the orderArray
+    const index = orderArray.findIndex(item => item.id === menuID);
+
+    // Remove the item if it exists
+    if (index > -1) {
+        orderArray.splice(index, 1);
     }
-    console.log(orderArray)
-    render()
+
+    // Update the UI for ordered items
+    updateOrderDisplay();
+
+    // Update the total price display
+    const orderTotal = orderArray.reduce((total, current) => total + current.price, 0);
+    document.getElementById("total").innerHTML = `<div><p>Total: $${orderTotal.toFixed(2)}</p></div>`;
 }
+
+function updateOrderDisplay() {
+    let orderHtml = '';
+    orderArray.forEach(item => {
+        orderHtml += `
+            <div class="order-container">
+                <div class="order-content">
+                    <div class="order-name">
+                        <p>${item.name}</p>
+                        <p class="remove" data-remove="${item.id}">Remove</p>
+                    </div>
+                    <div class="order-price">
+                        <p>$${item.price}</p>
+                    </div>
+                </div>
+            </div>`;
+    });
+    document.getElementById("buy-item").innerHTML = orderHtml;
+}
+
 
 function getMenuHtml() {
 
