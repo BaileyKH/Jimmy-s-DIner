@@ -14,9 +14,18 @@
     <p class="order">Your Order</p>
     <div class="buy-item" id="buy-item"></div>
     <div class="total" id="total"></div>
-    <div class="checkout-btn">
-        <button data-checkout="checkout">Check Out</button>
+    <div class="checkout-container">
+        <button id="order-btn" class="order-btn" data-checkout="checkout">Check Out</button>
     </div>
+    <form id="checkout-form" class="checkout-form hidden">
+        <div class="form-container">
+            <h3>Enter Card Details</h3>
+            <input id="name" type="text" name="fullname" min placeholder="Enter your name" required>
+            <input id="creditcard" type="number" name="creditcard" placeholder="Enter card number" min="16" required>
+            <input id="CVV" type="number" name="CVV" placeholder="Enter CVV" min="3" required>
+            <button data-pay="pay" id="pay-btn" class="pay-btn">Pay</button>
+        </div>
+    </form>
     <script src="index.js"></script>
 </body>
 </html>
