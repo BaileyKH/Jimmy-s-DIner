@@ -9,7 +9,6 @@ body {
     background-repeat: no-repeat;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
-    height: 100vh;
 }
 
 .banner {
@@ -92,6 +91,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    overflow: auto;
 }
 
 .order-name{
